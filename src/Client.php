@@ -4,6 +4,7 @@ namespace Carnetmotors\Vin114;
 
 use \SoapClient;
 use \SOAPFault;
+use Carnetmotors\Vin114\Beans\Vin114Result;
 
 /**
 *
@@ -12,7 +13,7 @@ class Client
 {
     const WEB_SERVICE_URL = 'http://58.221.57.73:8088/webService/BaInfoService.asmx?WSDL';
 
-    const VIN_ERRS = array(
+    const VIN114_ERRS = array(
         'E6' => '力洋接口程序出现异常',
         'E7' => 'IP验证不通过',
         'E8' => '未查到对应数据',
@@ -47,7 +48,7 @@ class Client
         'SSNF'     => 'releaseYear',
         'SSYF'     => 'releaseMont',
         'TCNF'     => 'retirementYear',
-        'VINNFVIN' => 'year',
+        'VINNF'    => 'year',
         'NLevelID' => 'newLevelId',
     );
 
@@ -57,7 +58,7 @@ class Client
 
     public function fetchBaseInfo($vin, &$errMsg)
     {
-        $vin114Result = null;
+        $vin114Result = new Vin114Result();
 
         try {
             $soapClient = new SoapClient(self::WEB_SERVICE_URL);
@@ -65,20 +66,29 @@ class Client
                 array('vin' => $vin)
             );
 
-            $errCodes = array_keys(self::VIN_ERRS);
-            if (in_array($errs, $response)) {
-                $errMsg = $errs[$response];
+            if (!isset($response->GetBaInfoByVINResult)) {
+                $errMsg = 'wrong response format. response = ' . serialize($response);
                 return null;
             }
 
-            $json = json_decode($response);
+            $result = $response->GetBaInfoByVINResult;
+
+            $errCodes = array_keys(self::VIN114_ERRS);
+            if (in_array($result, self::VIN114_ERRS)) {
+                $errMsg = self::VIN114_ERRS[$result];
+                return null;
+            }
+
+            $json = json_decode($result);
             if ($json == null) {
-                $errMsg = 'json decode error. response = ' . $response;
+                $errMsg = 'json decode error. response = ' . serialize($response);
                 return null;
             }
 
             foreach (self::KEY_PARAMETER_PAIRS as $key => $value) {
-                $vin114Result->$value = $json->$key;
+                if (isset($json[0]->$key)) {
+                    $vin114Result->$value = $json[0]->$key;
+                }
             }
         } catch (SOAPFault $fault) {
             $errMsg = 'SOAPFault: ' . $fault->getMessage();
