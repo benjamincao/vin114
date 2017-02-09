@@ -12,7 +12,7 @@ class Client
 {
     const WEB_SERVICE_URL = 'http://58.221.57.73:8088/webService/BaInfoService.asmx?WSDL';
 
-    protected $errs = array(
+    private $errs = array(
         'E6' => '力洋接口程序出现异常',
         'E7' => 'IP验证不通过',
         'E8' => '未查到对应数据',
@@ -65,7 +65,7 @@ class Client
                 array('vin' => $vin)
             );
 
-            $errCodes = array_keys($errs);
+            $errCodes = array_keys(self::errs);
             if (in_array($errs, $response)) {
                 $errMsg = $errs[$response];
                 return null;
