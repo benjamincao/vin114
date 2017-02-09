@@ -2,8 +2,8 @@
 
 namespace Carnetmotors\Vin114;
 
-use SoapClient;
-use SOAPFault;
+use \SoapClient;
+use \SOAPFault;
 
 /**
 *
