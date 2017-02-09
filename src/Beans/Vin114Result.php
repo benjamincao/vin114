@@ -98,7 +98,7 @@ class Vin114Result
             . self::SEPERATOR . '上市年份：' . $this->releaseYear
             . self::SEPERATOR . '上市月份：' . $this->releaseMont
             . self::SEPERATOR . '停产年份：' . $this->retirementYear
-            . self::SEPERATOR . 'VIN对应的年份，可为具体的年份和“未查到年代”两种：' . $this->year
-            . self::SEPERATOR . '力洋标识ID（新编制ID）如：GBZ0142A0013：' . $this->newLevelId;
+            . self::SEPERATOR . 'VIN对应的年份(可为具体的年份和“未查到年代”两种)：' . $this->year
+            . self::SEPERATOR . '力洋标识ID(新编制ID)：' . $this->newLevelId;
     }
 }
