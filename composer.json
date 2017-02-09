@@ -1,0 +1,24 @@
+{
+    "name": "carnetmotors/vin114",
+    "description": "a simple encapulation of the api of vin114",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Benjamin Cao",
+            "email": "caojianghui@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "monolog/monolog": "~1.22"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Carnetmotors\\Vin114\\": "src/"
+        }
+    }
+}
