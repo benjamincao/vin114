@@ -12,13 +12,13 @@ class Client
 {
     const WEB_SERVICE_URL = 'http://58.221.57.73:8088/webService/BaInfoService.asmx?WSDL';
 
-    private $errs = array(
+    const VIN_ERRS = array(
         'E6' => '力洋接口程序出现异常',
         'E7' => 'IP验证不通过',
         'E8' => '未查到对应数据',
     );
 
-    private $keyParameterPair = array(
+    const KEY_PARAMETER_PAIRS = array(
         'LevelId'  => 'levelId',
         'PP'       => 'brand',
         'CX  '     => 'vehicleModel',
@@ -65,7 +65,7 @@ class Client
                 array('vin' => $vin)
             );
 
-            $errCodes = array_keys(self::errs);
+            $errCodes = array_keys(self::VIN_ERRS);
             if (in_array($errs, $response)) {
                 $errMsg = $errs[$response];
                 return null;
@@ -77,7 +77,7 @@ class Client
                 return null;
             }
 
-            foreach ($keyParameterPair as $key => $value) {
+            foreach (self::KEY_PARAMETER_PAIRS as $key => $value) {
                 $vin114Result->$value = $json->$key;
             }
         } catch (SOAPFault $fault) {
